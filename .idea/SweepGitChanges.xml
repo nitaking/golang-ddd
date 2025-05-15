@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SweepGitChangeService">
+    <option name="recentCommitSummaries">
+      <list>
+        <option value="Implement initial Onion Architecture structure with note feature. Added domain models (note.go, link.go, note_error.go), repository interfaces (note_repository.go), and in-memory implementation (note_repository.go in memory package). Introduced use case layer (note_usecase.go) defining business logic interfaces and DTOs. Created HTTP controller (note_controller.go) for handling note-related endpoints. Updated main.go to wire dependencies and start the server. Added supporting files (README.md, go.mod, mise.toml, .gitignore, logger.go) and IDE configs (.idea/*). Removed placeholder main.go and added query interface (note_query.go) for future expansion." />
+      </list>
+    </option>
+  </component>
+</project>
