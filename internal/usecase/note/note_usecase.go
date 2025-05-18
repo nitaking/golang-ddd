@@ -47,7 +47,7 @@ type NoteUseCase interface {
 	EditNote(ctx context.Context, input EditNoteInput) (*EditNoteOutput, error)
 	DeleteNote(ctx context.Context, input DeleteNoteInput) (*DeleteNoteOutput, error)
 	LinkNote(ctx context.Context, input LinkNoteInput) (*LinkNoteOutput, error)
-	SearchNote(ctx context.Context, keyword string) ([]note.NoteSummary, error)
+	SearchNote(ctx context.Context, keyword string) (note.NoteSummary, error)
 }
 
 type noteUseCase struct {
@@ -96,10 +96,10 @@ func (n noteUseCase) LinkNote(ctx context.Context, in LinkNoteInput) (*LinkNoteO
 	panic("implement me")
 }
 
-func (n noteUseCase) SearchNote(ctx context.Context, keyword string) ([]note.NoteSummary, error) {
+func (n noteUseCase) SearchNote(ctx context.Context, keyword string) (note.NoteSummary, error) {
 	result, err := n.QueryRepository.Search(ctx, keyword)
 	if err != nil {
-		return nil, err
+		return result, err
 	}
 
 	return result, nil

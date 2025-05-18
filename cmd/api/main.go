@@ -2,25 +2,23 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"go-clean-architecture-boilerplate/internal/domain/note"
-	"go-clean-architecture-boilerplate/internal/infrastructure/memory"
+	"go-clean-architecture-boilerplate/internal/infrastructure/bolt"
 	"go-clean-architecture-boilerplate/internal/presentation/http"
 	usecase "go-clean-architecture-boilerplate/internal/usecase/note"
 	"log"
 )
 
 func main() {
-	// 0: memory data
-	noteMemory := make(map[note.NoteID]*note.Note)
+	// Init Bolt DB
+	db := bolt.NewBboltDB()
+	defer db.Close()
 
 	// 1. infra: リポジトリ実装を生成
-	repository := memory.NewNoteRepository(noteMemory)
-	queryRepository := memory.NewNoteQueryRepository(noteMemory)
-
-	//service := memory.NewNoteService(repository)
+	noteRepository := bolt.NewNoteRepository(db)
+	queryRepository := bolt.NewNoteQueryRepository(db)
 
 	// 2. usecase: NoteUseCase を生成
-	uc := usecase.NewNoteUseCase(repository, queryRepository)
+	uc := usecase.NewNoteUseCase(noteRepository, queryRepository)
 
 	// 3. presentation: Controller/Handler を生成
 	controller := http.NewNoteController(uc)
