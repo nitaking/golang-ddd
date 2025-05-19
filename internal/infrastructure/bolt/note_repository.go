@@ -55,6 +55,15 @@ func (r *NoteRepository) FindAll(ctx context.Context) ([]*note.Note, error) {
 }
 
 func (r *NoteRepository) DeleteByID(ctx context.Context, id note.NoteID) error {
-	//TODO implement me
-	panic("implement me")
+	err := r.db.Update(func(tx *bbolt.Tx) error {
+		b := tx.Bucket([]byte(NoteBucketName))
+		if b == nil {
+			return note.ErrNotFound
+		}
+		return b.Delete([]byte(id))
+	})
+	if err != nil {
+		return err
+	}
+	return nil
 }

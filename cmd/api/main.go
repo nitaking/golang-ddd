@@ -27,6 +27,8 @@ func main() {
 	r := gin.Default()
 	r.POST("/notes", controller.Create)
 	r.GET("/notes", controller.Search)
+	r.PUT("/notes/:id", controller.Edit)
+	r.DELETE("/notes/:id", controller.Delete)
 	log.Println("Listening on :8080")
 	if err := r.Run(":8080"); err != nil {
 		log.Fatal(err)
