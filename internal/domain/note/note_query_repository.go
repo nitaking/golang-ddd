@@ -5,5 +5,5 @@ import (
 )
 
 type NoteQueryRepository interface {
-	Search(ctx context.Context, query string) ([]NoteSummary, error)
+	Search(ctx context.Context, query string) (NoteSummary, error)
 }

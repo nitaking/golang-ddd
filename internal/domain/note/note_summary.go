@@ -1,6 +1,6 @@
 package note
 
 type NoteSummary struct {
-	ID    NoteID
-	Title string
+	Count int
+	Notes []Note
 }

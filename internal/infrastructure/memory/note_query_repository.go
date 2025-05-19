@@ -18,20 +18,21 @@ func NewNoteQueryRepository(data map[note.NoteID]*note.Note) *NoteQueryRepositor
 	}
 }
 
-func (r *NoteQueryRepository) Search(ctx context.Context, query string) ([]note.NoteSummary, error) {
+func (r *NoteQueryRepository) Search(ctx context.Context, query string) (note.NoteSummary, error) {
 
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
-	var result []note.NoteSummary
+	var notes []note.Note
 
 	for _, n := range r.data {
 		if strings.Contains(strings.ToLower(n.Title), strings.ToLower(query)) {
-			result = append(result, note.NoteSummary{
-				ID:    n.ID,
-				Title: n.Title,
-			})
+			n := *n
+			notes = append(notes, n)
 		}
 	}
-	return result, nil
+	return note.NoteSummary{
+		Count: len(notes),
+		Notes: notes,
+	}, nil
 }
