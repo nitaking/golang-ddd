@@ -1,36 +1,23 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"go-clean-architecture-boilerplate/internal/infrastructure/bolt"
-	"go-clean-architecture-boilerplate/internal/presentation/http"
-	usecase "go-clean-architecture-boilerplate/internal/usecase/note"
 	"log"
+	"os"
+
+	"go-clean-architecture-boilerplate/internal/infrastructure/di"
+	presentationhttp "go-clean-architecture-boilerplate/internal/presentation/http"
 )
 
 func main() {
-	// Init Bolt DB
-	db := bolt.NewBboltDB()
-	defer db.Close()
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 
-	// 1. infra: リポジトリ実装を生成
-	noteRepository := bolt.NewNoteRepository(db)
-	queryRepository := bolt.NewNoteQueryRepository(db)
+	container := di.NewContainer()
+	router := presentationhttp.NewRouter(container)
 
-	// 2. usecase: NoteUseCase を生成
-	uc := usecase.NewNoteUseCase(noteRepository, queryRepository)
-
-	// 3. presentation: Controller/Handler を生成
-	controller := http.NewNoteController(uc)
-
-	// 4. HTTP サーバを組み立てて起動
-	r := gin.Default()
-	r.POST("/notes", controller.Create)
-	r.GET("/notes", controller.Search)
-	r.PUT("/notes/:id", controller.Edit)
-	r.DELETE("/notes/:id", controller.Delete)
-	log.Println("Listening on :8080")
-	if err := r.Run(":8080"); err != nil {
-		log.Fatal(err)
+	if err := router.Run(":" + port); err != nil {
+		log.Fatalf("failed to run server: %v", err)
 	}
 }
