@@ -123,6 +123,7 @@ func (a *Adapter) ToCreateInput(entity *entity.Todo) *ent.TodoCreate { ... }
 - [DDD / Clean Architecture 設計ガイド](./knowledge-ddd-architecture.md) — 依存方向ルール、命名規約、レイヤー別責務
 - [Transaction Manager ガイド](./knowledge-transaction.md) — トランザクション管理の設計と使い分け
 - [Design Document](./design-architecture-migration.md) — 設計判断の経緯と根拠
+- [linear ドメイン モデリング設計ドキュメント](./knowledge-linear-modeling.md) — ユビキタス言語、集約・境界、業務フロー、ER図
 
 ## Design Principles
 
